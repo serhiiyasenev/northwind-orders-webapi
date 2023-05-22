@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-22T13:44:00.613Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.42" etag="hVQXlYfYrn3M-r6A_ZmY" version="21.2.4" type="device" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-05-22T16:52:49.799Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50" etag="c_xqyLlD6PIFkcPl28Io" version="21.3.2" type="device" pages="3">
   <diagram name="order-repository" id="4syIKuh37-kgR5Z2tyX-">
-    <mxGraphModel dx="2430" dy="990" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1807" dy="546" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -28,16 +28,13 @@
         <mxCell id="DHhh3yK-Te8nAs_nJDzn-11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;OrdersController&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;lt;&amp;lt;constructor&amp;gt;&amp;gt; + OrdersController(&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp; &amp;nbsp; IOrderRepository orderRepository, ILogger&amp;lt;OrdersController&amp;gt; logger)&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt; + GetOrdersAsync(int? skip, int? count):&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp; &amp;nbsp; ActionResult&amp;lt;IEnumerable&amp;lt;BriefOrder&amp;gt;&amp;gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt; + GetOrderAsync(long orderId):&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;ActionResult&amp;lt;FullOrder&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt; + AddOrderAsync(BriefOrder order):&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;ActionResult&amp;lt;AddOrder&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt; + RemoveOrderAsync(long orderId): ActionResult&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt; + UpdateOrderAsync(long orderId, BriefOrder order):&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp; &amp;nbsp; ActionResult&lt;/span&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="-360" y="235" width="400" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="DHhh3yK-Te8nAs_nJDzn-12" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="DHhh3yK-Te8nAs_nJDzn-11" target="fsVTtFMVFHhMLwAg6XjQ-5" edge="1">
-          <mxGeometry width="160" relative="1" as="geometry">
-            <mxPoint x="110" y="430" as="sourcePoint" />
-            <mxPoint x="270" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="DHhh3yK-Te8nAs_nJDzn-13" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="DHhh3yK-Te8nAs_nJDzn-11" target="DHhh3yK-Te8nAs_nJDzn-9" edge="1">
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="110" y="430" as="sourcePoint" />
             <mxPoint x="270" y="430" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-160" y="515" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="zYVj0WYoYXqnwiyUr_U6-1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;NorthwindContext&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;whiteSpace=wrap;" parent="1" vertex="1">
@@ -47,6 +44,12 @@
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="300" y="310" as="sourcePoint" />
             <mxPoint x="460" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JPZw4VA5nF1D_Yiyp3x8-1" value="1" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;rounded=0;" edge="1" parent="1" source="DHhh3yK-Te8nAs_nJDzn-11" target="fsVTtFMVFHhMLwAg6XjQ-5">
+          <mxGeometry x="-1" y="3" relative="1" as="geometry">
+            <mxPoint x="-80" y="490" as="sourcePoint" />
+            <mxPoint x="80" y="490" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
