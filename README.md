@@ -10,7 +10,7 @@ To successfully complete the task, you must have the following skills:
 * You should be familiar with the [Repository design pattern](https://martinfowler.com/eaaCatalog/repository.html).
 * You should know how to build [controller-based Web API applications](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-7.0) using ASP.NET Core.
 
-Estimated time to complete the task: 4 hours.
+Estimated time to complete the task: 6 hours.
 
 The task requires [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) to be installed.
 
@@ -75,7 +75,7 @@ The implementation of the `OrderRepository` class must meet the following requir
 * The repository class must use the [NorthwindContext](Northwind.Services.EntityFramework/Entities/NorthwindContext.cs) object to access the database entities in the database.
 * The repository class must implement *Constructor Injection* form of the [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) design pattern.
 * The repository class must have one public constructor with one parameter to initialize a repository object with the `NorthwindContext` object (see Diagram 2).
-* The `GetOrderAsync`, `RemoveOrderAsync` and `UpdateOrderAsync` methods must throw the [OrderNotFoundException](Northwind.Services/Repositories/OrderNotFoundException.cs) if a repository has no order with the specified identifier. 
+* The `GetOrderAsync`, `RemoveOrderAsync` and `UpdateOrderAsync` methods must throw the [OrderNotFoundException](Northwind.Services/Repositories/OrderNotFoundException.cs) if a repository has no order with the specified identifier.
 * The `AddOrderAsync` method must throw the [RepositoryException](Northwind.Services/Repositories/RepositoryException.cs) if a database operation returns an error.
 * The `GetOrdersAsync` method must throw the [ArgumentOutOfRangeException](https://learn.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception) if a method argument has incorrect value.
 
