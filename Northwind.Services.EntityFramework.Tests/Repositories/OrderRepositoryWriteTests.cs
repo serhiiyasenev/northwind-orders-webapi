@@ -43,7 +43,7 @@ namespace Northwind.Services.EntityFramework.Tests.Repositories
 
         [TestCase(10247)]
         [TestCase(11078)]
-        public void RemoveOrderAsync_OrderIsNotExist_Returns(long orderId)
+        public void RemoveOrderAsync_OrderIsNotExist_ThrowsOrderNotFoundException(long orderId)
         {
             // Arrange
             using var databaseService = new DatabaseService();
@@ -68,7 +68,7 @@ namespace Northwind.Services.EntityFramework.Tests.Repositories
         }
 
         [TestCaseSource(nameof(AddOrderData))]
-        public async Task AddOrderAsync_TableIsEmpty_ReturnsRowId(Order order)
+        public async Task AddOrderAsync_TableIsEmpty_AddsOrderAndReturnsRowId(Order order)
         {
             // Arrange
             using var databaseService = new DatabaseService();
@@ -101,7 +101,7 @@ namespace Northwind.Services.EntityFramework.Tests.Repositories
         }
 
         [TestCaseSource(nameof(AddOrderData))]
-        public async Task AddOrderAsync_TableIsNotEmpty_ReturnsRowId(Order order)
+        public async Task AddOrderAsync_TableIsNotEmpty_AddsOrderAndReturnsRowId(Order order)
         {
             // Arrange
             using var databaseService = new DatabaseService();
@@ -125,7 +125,7 @@ namespace Northwind.Services.EntityFramework.Tests.Repositories
         }
 
         [TestCaseSource(nameof(AddOrderDataInvalidOrderDetails))]
-        public void AddOrderAsync_InvalidOrderDetailData(Order order)
+        public void AddOrderAsync_InvalidOrderDetailData_ThrowsRepositoryException(Order order)
         {
             // Arrange
             using var databaseService = new DatabaseService();
@@ -188,7 +188,7 @@ namespace Northwind.Services.EntityFramework.Tests.Repositories
         }
 
         [TestCaseSource(nameof(UpdateOrderAsyncOrderIsNotExistData))]
-        public void UpdateOrderAsync_OrderIsNotExist_ThrownsException(Order order)
+        public void UpdateOrderAsync_OrderIsNotExist_OrderNotFoundException(Order order)
         {
             // Arrange
             using var databaseService = new DatabaseService();
