@@ -2,10 +2,9 @@ using System.Diagnostics;
 
 namespace Northwind.Services.EntityFramework.Entities
 {
-    [DebuggerDisplay("{Order.Id}, {Product.Id}")]
+    [DebuggerDisplay("{Order.OrderId}, {Product.ProductId}")]
     public class OrderDetail
     {
-        public long OrderDetailId { get; set; }
         public long OrderId { get; set; }
         public long ProductId { get; set; }
         public double UnitPrice { get; set; }

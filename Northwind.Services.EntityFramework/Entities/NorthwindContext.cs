@@ -21,10 +21,10 @@ namespace Northwind.Services.EntityFramework.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>()
-                .HasKey(o => o.Id);
+                .HasKey(o => o.OrderId);
 
             modelBuilder.Entity<OrderDetail>()
-                .HasKey(od => od.OrderDetailId);
+                .HasKey(od => new { od.OrderId, od.ProductId });
 
             modelBuilder.Entity<OrderDetail>()
                 .HasOne(od => od.Order)

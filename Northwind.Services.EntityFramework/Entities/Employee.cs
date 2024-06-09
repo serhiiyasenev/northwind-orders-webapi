@@ -2,10 +2,10 @@ using System.Diagnostics;
 
 namespace Northwind.Services.EntityFramework.Entities
 {
-    [DebuggerDisplay("{Id}, {FirstName}, {LastName}")]
+    [DebuggerDisplay("{EmployeeId}, {FirstName}, {LastName}")]
     public class Employee
     {
-        public long Id { get; set; }
+        public long EmployeeId { get; set; }
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
         public string Title { get; set; } = default!;

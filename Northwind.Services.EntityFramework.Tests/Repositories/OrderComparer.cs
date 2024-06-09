@@ -197,7 +197,7 @@ public static class OrderComparer
 
         if (s1.Id != s2.Id)
         {
-            message = "Shipper Id != Shipper Id";
+            message = "Shipper OrderId != Shipper OrderId";
             return false;
         }
 
@@ -247,7 +247,7 @@ public static class OrderComparer
 
         if (p1.Id != p2.Id)
         {
-            message = "Product.Id != Product.Id";
+            message = "Product.OrderId != Product.OrderId";
             return false;
         }
 

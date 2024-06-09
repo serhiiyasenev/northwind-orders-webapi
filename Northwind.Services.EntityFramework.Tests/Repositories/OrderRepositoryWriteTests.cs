@@ -24,20 +24,20 @@ public class OrderRepositoryWriteTests
         var repository = new OrderRepository(context);
 
         // Preconditions
-        long ordersBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {orderId}");
+        long ordersBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {orderId}");
         Assert.That(ordersBefore, Is.EqualTo(1));
 
-        long orderDetailsBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {orderId}");
+        long orderDetailsBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {orderId}");
         Assert.That(orderDetailsBefore, Is.EqualTo(detailCount));
 
         // Act
         await repository.RemoveOrderAsync(orderId: orderId);
 
         // Postconditions
-        long ordersAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {orderId}");
+        long ordersAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {orderId}");
         Assert.That(ordersAfter, Is.EqualTo(0));
 
-        long orderDetailsAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {orderId}");
+        long orderDetailsAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {orderId}");
         Assert.That(orderDetailsAfter, Is.EqualTo(0));
     }
 
@@ -56,14 +56,14 @@ public class OrderRepositoryWriteTests
         var repository = new OrderRepository(context);
 
         // Preconditions
-        long countBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders Where OrderID = {orderId}");
+        long countBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders Where OrderId = {orderId}");
         Assert.That(countBefore, Is.EqualTo(0));
 
         // Act
         _ = Assert.ThrowsAsync<OrderNotFoundException>(async () => await repository.RemoveOrderAsync(orderId: orderId));
 
         // Postconditions
-        long countAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders Where OrderID = {orderId}");
+        long countAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders Where OrderId = {orderId}");
         Assert.That(countAfter, Is.EqualTo(0));
     }
 
@@ -117,10 +117,10 @@ public class OrderRepositoryWriteTests
         long rowId = await repository.AddOrderAsync(order);
 
         // Assert
-        long counter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {rowId}");
+        long counter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {rowId}");
         Assert.That(counter, Is.EqualTo(1));
 
-        counter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {rowId}");
+        counter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {rowId}");
         Assert.That(counter, Is.EqualTo(order.OrderDetails.Count));
     }
 
@@ -165,20 +165,20 @@ public class OrderRepositoryWriteTests
         var repository = new OrderRepository(context);
 
         // Preconditions
-        long ordersBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {order.Id}");
+        long ordersBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {order.Id}");
         Assert.That(ordersBefore, Is.EqualTo(1));
 
-        long orderDetailsBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {order.Id}");
+        long orderDetailsBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {order.Id}");
         Assert.That(orderDetailsBefore, Is.GreaterThan(0));
 
         // Act
         await repository.UpdateOrderAsync(order: order);
 
         // Postconditions
-        long ordersAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {order.Id}");
+        long ordersAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {order.Id}");
         Assert.That(ordersAfter, Is.EqualTo(1));
 
-        long orderDetailsAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {order.Id}");
+        long orderDetailsAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {order.Id}");
         Assert.That(orderDetailsAfter, Is.EqualTo(order.OrderDetails.Count));
 
         // Assert
@@ -201,20 +201,20 @@ public class OrderRepositoryWriteTests
         var repository = new OrderRepository(context);
 
         // Preconditions
-        long ordersBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {order.Id}");
+        long ordersBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {order.Id}");
         Assert.That(ordersBefore, Is.EqualTo(0));
 
-        long orderDetailsBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {order.Id}");
+        long orderDetailsBefore = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {order.Id}");
         Assert.That(orderDetailsBefore, Is.EqualTo(0));
 
         // Act
         _ = Assert.ThrowsAsync<OrderNotFoundException>(async () => await repository.UpdateOrderAsync(order: order));
 
         // Postconditions
-        long ordersAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderID = {order.Id}");
+        long ordersAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM Orders WHERE OrderId = {order.Id}");
         Assert.That(ordersAfter, Is.EqualTo(0));
 
-        long orderDetailsAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderID = {order.Id}");
+        long orderDetailsAfter = databaseService.ExecuteScalar<long>($"SELECT COUNT(*) FROM OrderDetails WHERE OrderId = {order.Id}");
         Assert.That(orderDetailsAfter, Is.EqualTo(0));
     }
 

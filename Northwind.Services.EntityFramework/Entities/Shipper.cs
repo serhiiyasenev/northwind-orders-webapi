@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Northwind.Services.EntityFramework.Entities
 {
-    [DebuggerDisplay("{Id}, {CompanyName}")]
+    [DebuggerDisplay("{ShipperId}, {CompanyName}")]
     public class Shipper
     {
         public Shipper()
@@ -10,7 +10,7 @@ namespace Northwind.Services.EntityFramework.Entities
             this.Orders = new HashSet<Order>();
         }
 
-        public long Id { get; set; }
+        public long ShipperId { get; set; }
         public string CompanyName { get; set; } = default!;
         public string Phone { get; set; } = default!;
 
