@@ -90,7 +90,6 @@ namespace Northwind.Services.EntityFramework.Repositories
             }
         }
 
-
         public async Task RemoveOrderAsync(long orderId)
         {
             var order = await this._context.Orders
@@ -122,8 +121,22 @@ namespace Northwind.Services.EntityFramework.Repositories
                 throw new OrderNotFoundException($"Order with ID {order.Id} not found.");
             }
 
-            this._context.Entry(existingOrder).CurrentValues.SetValues(MapToEntityOrder(order));
-            existingOrder.OrderDetails.Clear();
+            existingOrder.CustomerId = order.Customer.Code.Code;
+            existingOrder.EmployeeId = order.Employee.Id;
+            existingOrder.OrderDate = order.OrderDate;
+            existingOrder.RequiredDate = order.RequiredDate;
+            existingOrder.ShippedDate = order.ShippedDate;
+            existingOrder.ShipVia = order.Shipper.Id;
+            existingOrder.Freight = order.Freight;
+            existingOrder.ShipName = order.ShipName;
+            existingOrder.ShipAddress = order.ShippingAddress.Address;
+            existingOrder.ShipCity = order.ShippingAddress.City;
+            existingOrder.ShipRegion = order.ShippingAddress.Region!;
+            existingOrder.ShipPostalCode = order.ShippingAddress.PostalCode;
+            existingOrder.ShipCountry = order.ShippingAddress.Country;
+
+            this._context.OrderDetails.RemoveRange(existingOrder.OrderDetails);
+
             foreach (var orderDetail in order.OrderDetails)
             {
                 existingOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
@@ -136,7 +149,7 @@ namespace Northwind.Services.EntityFramework.Repositories
         {
             var repositoryOrder = new RepositoryOrder(order.OrderId)
             {
-                Customer = new Services.Repositories.Customer(new CustomerCode(order.CustomerId!.ToString()))
+                Customer = new Services.Repositories.Customer(new CustomerCode(order.CustomerId!))
                 {
                     CompanyName = order.Customer.CompanyName!
                 },
@@ -189,11 +202,11 @@ namespace Northwind.Services.EntityFramework.Repositories
             return repositoryOrder;
         }
 
+
         private static Order MapToEntityOrder(RepositoryOrder order)
         {
             var entityOrder = new Order
             {
-                OrderId = order.Id,
                 CustomerId = order.Customer.Code.Code,
                 EmployeeId = order.Employee.Id,
                 OrderDate = order.OrderDate,
@@ -219,7 +232,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
         private static OrderDetail MapToEntityOrderDetail(Services.Repositories.OrderDetail orderDetail)
         {
-            return new OrderDetail
+            return new Services.EntityFramework.Entities.OrderDetail
             {
                 OrderId = orderDetail.Order.Id,
                 ProductId = orderDetail.Product.Id,
