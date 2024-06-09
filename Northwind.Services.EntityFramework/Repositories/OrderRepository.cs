@@ -178,13 +178,12 @@ namespace Northwind.Services.EntityFramework.Repositories
             return repositoryOrder;
         }
 
-
         private static Order MapToEntityOrder(RepositoryOrder order)
         {
             var entityOrder = new Order
             {
                 OrderId = order.Id,
-                CustomerId = long.Parse(order.Customer.Code.Code),
+                CustomerId = order.Customer.Code.Code,
                 EmployeeId = order.Employee.Id,
                 OrderDate = order.OrderDate,
                 RequiredDate = order.RequiredDate,
