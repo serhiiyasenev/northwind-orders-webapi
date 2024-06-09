@@ -84,28 +84,17 @@ namespace Northwind.Orders.WebApi.Controllers
         [HttpPut("{orderId}")]
         public async Task<ActionResult> UpdateOrderAsync(long orderId, BriefOrder order)
         {
-            if (orderId != order.Id)
-            {
-                return new NotFoundResult();
-            }
-
             try
             {
                 await this._orderRepository.UpdateOrderAsync(MapToRepositoryOrder(order));
-                return new NoContentResult();
-            }
-            catch (OrderNotFoundException)
-            {
-                return new NotFoundResult();
+                return new NoContentResult(); // Повертає 204 No Content, якщо оновлення пройшло успішно
             }
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error updating order with ID {OrderId}", orderId);
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(500); // Повертає 500 Internal Server Error, якщо виникла інша помилка
             }
         }
-
-
 
         private static FullOrder MapToFullOrder(Order repositoryOrder)
         {
