@@ -11,7 +11,7 @@ namespace Northwind.Services.EntityFramework.Entities
         }
 
         public long OrderId { get; set; }
-        public string CustomerId { get; set; }
+        public string? CustomerId { get; set; }
         public long EmployeeId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime RequiredDate { get; set; }

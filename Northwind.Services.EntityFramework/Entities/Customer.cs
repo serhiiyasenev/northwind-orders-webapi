@@ -5,7 +5,7 @@ namespace Northwind.Services.EntityFramework.Entities
     [DebuggerDisplay("{CustomerId}, {CompanyName}")]
     public class Customer
     {
-        public string CustomerId { get; set; }
+        public string? CustomerId { get; set; }
         public string? CompanyName { get; set; } = default!;
         public string? ContactName { get; set; } = default!;
         public string? ContactTitle { get; set; } = default!;
