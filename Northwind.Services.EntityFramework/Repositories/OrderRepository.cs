@@ -71,6 +71,12 @@ namespace Northwind.Services.EntityFramework.Repositories
             {
                 var entityOrder = MapToEntityOrder(order);
                 this._context.Orders.Add(entityOrder);
+
+                if (entityOrder.OrderDetails.Any(orderDetail => orderDetail.ProductId <= 0))
+                {
+                    throw new RepositoryException("Invalid ProductId in OrderDetail.");
+                }
+
                 await this._context.SaveChangesAsync();
                 return entityOrder.OrderId;
             }
@@ -78,7 +84,12 @@ namespace Northwind.Services.EntityFramework.Repositories
             {
                 throw new RepositoryException("Error adding order.", ex);
             }
+            catch (Exception ex)
+            {
+                throw new RepositoryException("An error occurred while adding the order.", ex);
+            }
         }
+
 
         public async Task RemoveOrderAsync(long orderId)
         {
@@ -125,31 +136,31 @@ namespace Northwind.Services.EntityFramework.Repositories
         {
             var repositoryOrder = new RepositoryOrder(order.OrderId)
             {
-                Customer = new Services.Repositories.Customer(new CustomerCode(order.CustomerId.ToString()))
+                Customer = new Services.Repositories.Customer(new CustomerCode(order.CustomerId!.ToString()))
                 {
-                    CompanyName = order.Customer.CompanyName
+                    CompanyName = order.Customer.CompanyName!
                 },
                 Employee = new Services.Repositories.Employee(order.EmployeeId)
                 {
-                    FirstName = order.Employee.FirstName,
-                    LastName = order.Employee.LastName,
-                    Country = order.Employee.Country
+                    FirstName = order.Employee.FirstName!,
+                    LastName = order.Employee.LastName!,
+                    Country = order.Employee.Country!
                 },
                 OrderDate = order.OrderDate,
                 RequiredDate = order.RequiredDate,
                 ShippedDate = order.ShippedDate,
                 Shipper = new Services.Repositories.Shipper(order.ShipVia)
                 {
-                    CompanyName = order.Shipper.CompanyName
+                    CompanyName = order.Shipper.CompanyName!
                 },
                 Freight = order.Freight,
-                ShipName = order.ShipName,
+                ShipName = order.ShipName!,
                 ShippingAddress = new ShippingAddress(
-                    order.ShipAddress,
-                    order.ShipCity,
+                    order.ShipAddress!,
+                    order.ShipCity!,
                     order.ShipRegion,
-                    order.ShipPostalCode,
-                    order.ShipCountry
+                    order.ShipPostalCode!,
+                    order.ShipCountry!
                 )
             };
 
@@ -157,7 +168,7 @@ namespace Northwind.Services.EntityFramework.Repositories
             {
                 var product = new Services.Repositories.Product(orderDetail.ProductId)
                 {
-                    ProductName = orderDetail.Product.ProductName,
+                    ProductName = orderDetail.Product.ProductName!,
                     SupplierId = orderDetail.Product.SupplierId,
                     Supplier = orderDetail.Product.Supplier?.CompanyName ?? string.Empty,
                     CategoryId = orderDetail.Product.CategoryId,

@@ -10,7 +10,7 @@ namespace Northwind.Services.EntityFramework.Entities
             this.Orders = new HashSet<Order>();
         }
 
-        public long ShipperId { get; set; }
+        public long? ShipperId { get; set; }
         public string? CompanyName { get; set; } = default!;
         public string? Phone { get; set; } = default!;
 
