@@ -61,6 +61,5 @@ namespace Northwind.Services.EntityFramework.Entities
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId);
         }
-
     }
 }

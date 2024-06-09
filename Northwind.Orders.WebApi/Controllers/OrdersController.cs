@@ -113,14 +113,14 @@ namespace Northwind.Orders.WebApi.Controllers
                 Customer = new Models.Customer
                 {
                     Code = repositoryOrder.Customer.Code.Code,
-                    CompanyName = repositoryOrder.Customer.CompanyName
+                    CompanyName = repositoryOrder.Customer.CompanyName,
                 },
                 Employee = new Models.Employee
                 {
                     Id = repositoryOrder.Employee.Id,
                     FirstName = repositoryOrder.Employee.FirstName,
                     LastName = repositoryOrder.Employee.LastName,
-                    Country = repositoryOrder.Employee.Country
+                    Country = repositoryOrder.Employee.Country,
                 },
                 OrderDate = repositoryOrder.OrderDate,
                 RequiredDate = repositoryOrder.RequiredDate,
@@ -128,7 +128,7 @@ namespace Northwind.Orders.WebApi.Controllers
                 Shipper = new Models.Shipper
                 {
                     Id = repositoryOrder.Shipper.Id,
-                    CompanyName = repositoryOrder.Shipper.CompanyName
+                    CompanyName = repositoryOrder.Shipper.CompanyName,
                 },
                 Freight = repositoryOrder.Freight,
                 ShipName = repositoryOrder.ShipName,
@@ -138,7 +138,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     City = repositoryOrder.ShippingAddress.City,
                     Region = repositoryOrder.ShippingAddress.Region,
                     PostalCode = repositoryOrder.ShippingAddress.PostalCode,
-                    Country = repositoryOrder.ShippingAddress.Country
+                    Country = repositoryOrder.ShippingAddress.Country,
                 },
                 OrderDetails = repositoryOrder.OrderDetails.Select(detail => new FullOrderDetail
                 {
@@ -150,7 +150,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     SupplierCompanyName = detail.Product.Supplier,
                     UnitPrice = detail.UnitPrice,
                     Quantity = detail.Quantity,
-                    Discount = detail.Discount
+                    Discount = detail.Discount,
                 }).ToList()
             };
         }
@@ -178,7 +178,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     ProductId = detail.Product.Id,
                     UnitPrice = detail.UnitPrice,
                     Quantity = detail.Quantity,
-                    Discount = detail.Discount
+                    Discount = detail.Discount,
                 }).ToList()
             };
         }
@@ -189,7 +189,7 @@ namespace Northwind.Orders.WebApi.Controllers
             {
                 Customer = new Northwind.Services.Repositories.Customer(new Northwind.Services.Repositories.CustomerCode(order.CustomerId))
                 {
-                    CompanyName = order.CustomerId
+                    CompanyName = order.CustomerId,
                 },
                 Employee = new Northwind.Services.Repositories.Employee(order.EmployeeId),
                 OrderDate = order.OrderDate,
@@ -203,8 +203,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     order.ShipCity,
                     order.ShipRegion,
                     order.ShipPostalCode,
-                    order.ShipCountry
-                )
+                    order.ShipCountry),
             };
 
             foreach (var detail in order.OrderDetails)
@@ -214,7 +213,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     Product = new Northwind.Services.Repositories.Product(detail.ProductId),
                     UnitPrice = detail.UnitPrice,
                     Quantity = detail.Quantity,
-                    Discount = detail.Discount
+                    Discount = detail.Discount,
                 };
                 repositoryOrder.OrderDetails.Add(orderDetail);
             }
