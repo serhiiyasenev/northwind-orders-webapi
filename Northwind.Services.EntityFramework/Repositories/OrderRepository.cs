@@ -121,7 +121,6 @@ namespace Northwind.Services.EntityFramework.Repositories
                 throw new OrderNotFoundException($"Order with ID {order.Id} not found.");
             }
 
-            // Оновлюємо основне замовлення
             existingOrder.CustomerId = order.Customer.Code.Code;
             existingOrder.EmployeeId = order.Employee.Id;
             existingOrder.OrderDate = order.OrderDate;
@@ -136,18 +135,15 @@ namespace Northwind.Services.EntityFramework.Repositories
             existingOrder.ShipPostalCode = order.ShippingAddress.PostalCode;
             existingOrder.ShipCountry = order.ShippingAddress.Country;
 
-            // Видаляємо існуючі деталі замовлення
             this._context.OrderDetails.RemoveRange(existingOrder.OrderDetails);
 
-            // Додаємо нові деталі замовлення
             foreach (var orderDetail in order.OrderDetails)
             {
-                existingOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
+                existingOrder.OrderDetails.Add(this.MapToEntityOrderDetail(orderDetail));
             }
 
             await this._context.SaveChangesAsync();
         }
-
 
         private static RepositoryOrder MapToRepositoryOrder(Order order)
         {
@@ -206,7 +202,6 @@ namespace Northwind.Services.EntityFramework.Repositories
             return repositoryOrder;
         }
 
-
         private Order MapToEntityOrder(RepositoryOrder order)
         {
             var entityOrder = new Order
@@ -263,7 +258,6 @@ namespace Northwind.Services.EntityFramework.Repositories
             }
             else
             {
-                // Update supplier and category if they exist
                 if (product.Supplier == null || product.Supplier.CompanyName != orderDetail.Product.Supplier)
                 {
                     product.Supplier = new Supplier
@@ -293,7 +287,5 @@ namespace Northwind.Services.EntityFramework.Repositories
                 Product = product
             };
         }
-
-
     }
 }
