@@ -151,7 +151,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     UnitPrice = detail.UnitPrice,
                     Quantity = detail.Quantity,
                     Discount = detail.Discount,
-                }).ToList()
+                }).ToList(),
             };
         }
 
@@ -179,7 +179,7 @@ namespace Northwind.Orders.WebApi.Controllers
                     UnitPrice = detail.UnitPrice,
                     Quantity = detail.Quantity,
                     Discount = detail.Discount,
-                }).ToList()
+                }).ToList(),
             };
         }
 

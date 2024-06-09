@@ -285,7 +285,7 @@ namespace Northwind.Services.EntityFramework.Repositories
                     {
                         CategoryId = orderDetail.Product.CategoryId,
                         CategoryName = orderDetail.Product.Category,
-                    }
+                    },
                 };
             }
             else
