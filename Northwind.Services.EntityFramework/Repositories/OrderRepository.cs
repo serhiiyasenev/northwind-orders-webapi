@@ -24,6 +24,10 @@ namespace Northwind.Services.EntityFramework.Repositories
                 .Include(o => o.Shipper)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Product)
+                .ThenInclude(p => p.Supplier)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .ThenInclude(p => p.Category)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
             if (order == null)
@@ -52,6 +56,10 @@ namespace Northwind.Services.EntityFramework.Repositories
                 .Include(o => o.Shipper)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Product)
+                .ThenInclude(p => p.Supplier)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .ThenInclude(p => p.Category)
                 .OrderBy(o => o.OrderId)
                 .Skip(skip)
                 .Take(count)
@@ -69,7 +77,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             try
             {
-                var entityOrder = this.MapToEntityOrder(order);
+                var entityOrder = MapToEntityOrder(order);
                 this._context.Orders.Add(entityOrder);
 
                 if (entityOrder.OrderDetails.Any(orderDetail => orderDetail.ProductId <= 0))
@@ -139,7 +147,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             foreach (var orderDetail in order.OrderDetails)
             {
-                existingOrder.OrderDetails.Add(this.MapToEntityOrderDetail(orderDetail));
+                existingOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
             }
 
             await this._context.SaveChangesAsync();
@@ -202,7 +210,6 @@ namespace Northwind.Services.EntityFramework.Repositories
             return repositoryOrder;
         }
 
-
         private Order MapToEntityOrder(RepositoryOrder order)
         {
             var entityOrder = new Order
@@ -224,7 +231,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             foreach (var orderDetail in order.OrderDetails)
             {
-                entityOrder.OrderDetails.Add(this.MapToEntityOrderDetail(orderDetail));
+                entityOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
             }
 
             return entityOrder;
@@ -288,6 +295,5 @@ namespace Northwind.Services.EntityFramework.Repositories
                 Product = product
             };
         }
-
     }
 }
