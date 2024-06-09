@@ -8,13 +8,13 @@ namespace Northwind.Orders.WebApi.Controllers
     [Route("api/[controller]")]
     public sealed class OrdersController : ControllerBase
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly ILogger<OrdersController> _logger;
+        private readonly IOrderRepository orderRepository;
+        private readonly ILogger<OrdersController> logger;
 
         public OrdersController(IOrderRepository orderRepository, ILogger<OrdersController> logger)
         {
-            this._orderRepository = orderRepository;
-            this._logger = logger;
+            this.orderRepository = orderRepository;
+            this.logger = logger;
         }
 
         [HttpGet("{orderId}")]
@@ -22,12 +22,12 @@ namespace Northwind.Orders.WebApi.Controllers
         {
             try
             {
-                var order = await this._orderRepository.GetOrderAsync(orderId);
+                var order = await this.orderRepository.GetOrderAsync(orderId);
                 return this.Ok(MapToFullOrder(order));
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error retrieving order with ID {OrderId}", orderId);
+                this.logger.LogError(ex, "Error retrieving order with ID {OrderId}", orderId);
                 return ex.Message.Contains("NotFound") ? new NotFoundResult() : new StatusCodeResult(500);
             }
         }
@@ -37,12 +37,12 @@ namespace Northwind.Orders.WebApi.Controllers
         {
             try
             {
-                var orders = await this._orderRepository.GetOrdersAsync(skip ?? 0, count ?? 10);
+                var orders = await this.orderRepository.GetOrdersAsync(skip ?? 0, count ?? 10);
                 return this.Ok(orders.Select(MapToBriefOrder));
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error retrieving orders");
+                this.logger.LogError(ex, "Error retrieving orders");
                 return ex.Message.Contains("System.Exception") ? new StatusCodeResult(500) : new BadRequestResult();
             }
         }
@@ -52,12 +52,12 @@ namespace Northwind.Orders.WebApi.Controllers
         {
             try
             {
-                var orderId = await this._orderRepository.AddOrderAsync(MapToRepositoryOrder(order));
+                var orderId = await this.orderRepository.AddOrderAsync(MapToRepositoryOrder(order));
                 return this.Ok(new AddOrder { OrderId = orderId });
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error adding order");
+                this.logger.LogError(ex, "Error adding order");
                 return new StatusCodeResult(500);
             }
         }
@@ -67,7 +67,7 @@ namespace Northwind.Orders.WebApi.Controllers
         {
             try
             {
-                await this._orderRepository.RemoveOrderAsync(orderId);
+                await this.orderRepository.RemoveOrderAsync(orderId);
                 return this.NoContent();
             }
             catch (OrderNotFoundException)
@@ -76,7 +76,7 @@ namespace Northwind.Orders.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error removing order with ID {OrderId}", orderId);
+                this.logger.LogError(ex, "Error removing order with ID {OrderId}", orderId);
                 return new StatusCodeResult(500);
             }
         }
@@ -86,25 +86,24 @@ namespace Northwind.Orders.WebApi.Controllers
         {
             if (orderId != order.Id)
             {
-                return new BadRequestResult(); // Повертає 400 Bad Request, якщо ID замовлення не збігаються
+                return new BadRequestResult();
             }
 
             try
             {
-                await this._orderRepository.UpdateOrderAsync(MapToRepositoryOrder(order));
-                return new NoContentResult(); // Повертає 204 No Content, якщо оновлення пройшло успішно
+                await this.orderRepository.UpdateOrderAsync(MapToRepositoryOrder(order));
+                return new NoContentResult();
             }
             catch (OrderNotFoundException)
             {
-                return new NotFoundResult(); // Повертає 404 Not Found, якщо замовлення не знайдено
+                return new NotFoundResult();
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, "Error updating order with ID {OrderId}", orderId);
-                return new StatusCodeResult(500); // Повертає 500 Internal Server Error, якщо виникла інша помилка
+                this.logger.LogError(ex, "Error updating order with ID {OrderId}", orderId);
+                return new StatusCodeResult(500);
             }
         }
-
 
         private static FullOrder MapToFullOrder(Order repositoryOrder)
         {
@@ -222,7 +221,5 @@ namespace Northwind.Orders.WebApi.Controllers
 
             return repositoryOrder;
         }
-
-
     }
 }
