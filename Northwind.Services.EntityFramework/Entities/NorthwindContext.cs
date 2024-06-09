@@ -20,7 +20,9 @@ namespace Northwind.Services.EntityFramework.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure primary key and relationships
+            modelBuilder.Entity<Order>()
+                .HasKey(o => o.Id);
+
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(od => od.OrderDetailId);
 
@@ -59,5 +61,6 @@ namespace Northwind.Services.EntityFramework.Entities
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId);
         }
+
     }
 }
