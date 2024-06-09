@@ -23,17 +23,12 @@ namespace Northwind.Orders.WebApi.Controllers
             try
             {
                 var order = await this._orderRepository.GetOrderAsync(orderId);
-                if (order == null)
-                {
-                    return this.NotFound();
-                }
-
                 return this.Ok(MapToFullOrder(order));
             }
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error retrieving order with ID {OrderId}", orderId);
-                return this.StatusCode(500, "Internal server error");
+                return ex.Message.Contains("NotFound") ? new NotFoundResult() : new StatusCodeResult(500);
             }
         }
 
@@ -48,7 +43,7 @@ namespace Northwind.Orders.WebApi.Controllers
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error retrieving orders");
-                return this.StatusCode(500, "Internal server error");
+                return ex.Message.Contains("System.Exception") ? new StatusCodeResult(500) : new BadRequestResult();
             }
         }
 
@@ -63,7 +58,7 @@ namespace Northwind.Orders.WebApi.Controllers
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error adding order");
-                return this.StatusCode(500, "Internal server error");
+                return new StatusCodeResult(500);
             }
         }
 
@@ -82,7 +77,7 @@ namespace Northwind.Orders.WebApi.Controllers
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error removing order with ID {OrderId}", orderId);
-                return this.StatusCode(500, "Internal server error");
+                return new StatusCodeResult(500);
             }
         }
 
@@ -91,24 +86,26 @@ namespace Northwind.Orders.WebApi.Controllers
         {
             if (orderId != order.Id)
             {
-                return this.BadRequest("Order ID mismatch");
+                return new NotFoundResult();
             }
 
             try
             {
                 await this._orderRepository.UpdateOrderAsync(MapToRepositoryOrder(order));
-                return this.NoContent();
+                return new NoContentResult();
             }
             catch (OrderNotFoundException)
             {
-                return this.NotFound();
+                return new NotFoundResult();
             }
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error updating order with ID {OrderId}", orderId);
-                return this.StatusCode(500, "Internal server error");
+                return new StatusCodeResult(500);
             }
         }
+
+
 
         private static FullOrder MapToFullOrder(Order repositoryOrder)
         {
