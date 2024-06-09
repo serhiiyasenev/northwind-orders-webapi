@@ -77,7 +77,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             try
             {
-                var entityOrder = MapToEntityOrder(order);
+                var entityOrder = this.MapToEntityOrder(order);
                 this._context.Orders.Add(entityOrder);
 
                 if (entityOrder.OrderDetails.Any(orderDetail => orderDetail.ProductId <= 0))
@@ -147,7 +147,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             foreach (var orderDetail in order.OrderDetails)
             {
-                existingOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
+                existingOrder.OrderDetails.Add(this.MapToEntityOrderDetail(orderDetail));
             }
 
             await this._context.SaveChangesAsync();
@@ -231,7 +231,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             foreach (var orderDetail in order.OrderDetails)
             {
-                entityOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
+                entityOrder.OrderDetails.Add(this.MapToEntityOrderDetail(orderDetail));
             }
 
             return entityOrder;
