@@ -11,7 +11,9 @@ namespace Northwind.Services.EntityFramework.Entities
         }
 
         public long? CategoryId { get; set; }
+
         public string? CategoryName { get; set; } = default!;
+
         public string? Description { get; set; }
 
         public ICollection<Product> Products { get; set; }

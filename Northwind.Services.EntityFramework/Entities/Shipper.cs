@@ -11,7 +11,9 @@ namespace Northwind.Services.EntityFramework.Entities
         }
 
         public long? ShipperId { get; set; }
+
         public string? CompanyName { get; set; } = default!;
+
         public string? Phone { get; set; } = default!;
 
         public ICollection<Order> Orders { get; set; }
