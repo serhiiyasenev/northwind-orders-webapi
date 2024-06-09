@@ -69,7 +69,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             try
             {
-                var entityOrder = MapToEntityOrder(order);
+                var entityOrder = this.MapToEntityOrder(order);
                 this._context.Orders.Add(entityOrder);
 
                 if (entityOrder.OrderDetails.Any(orderDetail => orderDetail.ProductId <= 0))
@@ -121,6 +121,7 @@ namespace Northwind.Services.EntityFramework.Repositories
                 throw new OrderNotFoundException($"Order with ID {order.Id} not found.");
             }
 
+            // Оновлюємо основне замовлення
             existingOrder.CustomerId = order.Customer.Code.Code;
             existingOrder.EmployeeId = order.Employee.Id;
             existingOrder.OrderDate = order.OrderDate;
@@ -135,8 +136,10 @@ namespace Northwind.Services.EntityFramework.Repositories
             existingOrder.ShipPostalCode = order.ShippingAddress.PostalCode;
             existingOrder.ShipCountry = order.ShippingAddress.Country;
 
+            // Видаляємо існуючі деталі замовлення
             this._context.OrderDetails.RemoveRange(existingOrder.OrderDetails);
 
+            // Додаємо нові деталі замовлення
             foreach (var orderDetail in order.OrderDetails)
             {
                 existingOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
@@ -144,6 +147,7 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             await this._context.SaveChangesAsync();
         }
+
 
         private static RepositoryOrder MapToRepositoryOrder(Order order)
         {
@@ -203,7 +207,7 @@ namespace Northwind.Services.EntityFramework.Repositories
         }
 
 
-        private static Order MapToEntityOrder(RepositoryOrder order)
+        private Order MapToEntityOrder(RepositoryOrder order)
         {
             var entityOrder = new Order
             {
@@ -224,22 +228,72 @@ namespace Northwind.Services.EntityFramework.Repositories
 
             foreach (var orderDetail in order.OrderDetails)
             {
-                entityOrder.OrderDetails.Add(MapToEntityOrderDetail(orderDetail));
+                entityOrder.OrderDetails.Add(this.MapToEntityOrderDetail(orderDetail));
             }
 
             return entityOrder;
         }
 
-        private static OrderDetail MapToEntityOrderDetail(Services.Repositories.OrderDetail orderDetail)
+        private OrderDetail MapToEntityOrderDetail(Services.Repositories.OrderDetail orderDetail)
         {
-            return new Services.EntityFramework.Entities.OrderDetail
+            var product = this._context.Products
+                .Include(p => p.Supplier)
+                .Include(p => p.Category)
+                .FirstOrDefault(p => p.ProductId == orderDetail.Product.Id);
+
+            if (product == null)
+            {
+                product = new Entities.Product
+                {
+                    ProductId = orderDetail.Product.Id,
+                    ProductName = orderDetail.Product.ProductName,
+                    SupplierId = orderDetail.Product.SupplierId,
+                    Supplier = new Supplier
+                    {
+                        SupplierId = orderDetail.Product.SupplierId,
+                        CompanyName = orderDetail.Product.Supplier
+                    },
+                    CategoryId = orderDetail.Product.CategoryId,
+                    Category = new Category
+                    {
+                        CategoryId = orderDetail.Product.CategoryId,
+                        CategoryName = orderDetail.Product.Category
+                    }
+                };
+            }
+            else
+            {
+                // Update supplier and category if they exist
+                if (product.Supplier == null || product.Supplier.CompanyName != orderDetail.Product.Supplier)
+                {
+                    product.Supplier = new Supplier
+                    {
+                        SupplierId = orderDetail.Product.SupplierId,
+                        CompanyName = orderDetail.Product.Supplier
+                    };
+                }
+
+                if (product.Category == null || product.Category.CategoryName != orderDetail.Product.Category)
+                {
+                    product.Category = new Category
+                    {
+                        CategoryId = orderDetail.Product.CategoryId,
+                        CategoryName = orderDetail.Product.Category
+                    };
+                }
+            }
+
+            return new OrderDetail
             {
                 OrderId = orderDetail.Order.Id,
-                ProductId = orderDetail.Product.Id,
+                ProductId = product.ProductId,
                 UnitPrice = orderDetail.UnitPrice,
                 Quantity = orderDetail.Quantity,
-                Discount = orderDetail.Discount
+                Discount = orderDetail.Discount,
+                Product = product
             };
         }
+
+
     }
 }
