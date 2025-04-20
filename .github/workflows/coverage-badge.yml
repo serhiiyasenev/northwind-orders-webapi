@@ -47,6 +47,10 @@ jobs:
           reporttypes: 'Badges;HtmlInline'
           assemblyfilters: '-*.Tests'
 
+      - name: Clean working directory
+        run: |
+          git reset --hard
+          git clean -fdx
 
       - name: Commit & push coverage badge
         env:
@@ -59,4 +63,3 @@ jobs:
           git add coveragereport/badge_linecoverage.svg
           git commit -m "Update coverage badge" || echo "No changes to commit"
           git push
-
