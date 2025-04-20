@@ -44,6 +44,6 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git pull --rebase
-          git add coveragereport/badge_line.svg
+          git add coveragereport/badge_linecoverage.svg
           git commit -m "Update coverage badge" || echo "No changes to commit"
           git push
