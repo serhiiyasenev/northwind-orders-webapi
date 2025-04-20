@@ -28,7 +28,7 @@ namespace Northwind.Orders.WebApi.Controllers
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "Error retrieving order with ID {OrderId}", orderId);
-                return ex.Message.Contains("NotFound") ? new NotFoundResult() : new StatusCodeResult(500);
+                return ex.Message.Contains("NotFound", StringComparison.OrdinalIgnoreCase) ? new NotFoundResult() : new StatusCodeResult(500);
             }
         }
 
