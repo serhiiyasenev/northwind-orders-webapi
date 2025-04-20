@@ -131,4 +131,4 @@ Diagram 4. Northwind Database Schema.
 * Do not install additional NuGet packages for the projects in this solution.
 * The task is considered completed if all unit tests pass successfully.
 
-![Coverage](./coveragereport/badge_line.svg)
+![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_line.svg)
