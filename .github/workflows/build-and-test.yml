@@ -9,6 +9,10 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      checks: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,7 +34,6 @@ jobs:
             --no-build --configuration Release \
             --logger "trx;LogFileName=webapi-tests.trx" \
             --collect:"XPlat Code Coverage"
-        continue-on-error: true
 
       - name: Run tests - EF Services
         run: |
@@ -38,21 +41,18 @@ jobs:
             --no-build --configuration Release \
             --logger "trx;LogFileName=ef-tests.trx" \
             --collect:"XPlat Code Coverage"
-        continue-on-error: true
 
       - name: Upload Test Results (.trx)
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: |
-            **/TestResults/*.trx
+          path: '**/TestResults/*.trx'
 
       - name: Upload Code Coverage (.cobertura.xml)
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage
-          path: |
-            **/coverage.cobertura.xml
+          path: '**/coverage.cobertura.xml'
 
       - name: Report Test Results to GitHub UI
         uses: dorny/test-reporter@v1
@@ -71,7 +71,11 @@ jobs:
           output: 'both'
 
       - name: Save coverage badge
-        run: |
-          mkdir -p coverage-badges
-          cp code-coverage-results.md coverage-badges/coverage-summary.md
         if: always()
+        run: |
+          if [ -f code-coverage-results.md ]; then
+            mkdir -p coverage-badges
+            cp code-coverage-results.md coverage-badges/coverage-summary.md
+          else
+            echo "No coverage summary generated."
+          fi
