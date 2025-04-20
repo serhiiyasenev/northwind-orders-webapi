@@ -1,4 +1,14 @@
-# Northwind Order Repository (Web API)
+# Northwind Orders Web API
+
+This project provides a RESTful Web API for managing orders in the classic Northwind database using **ASP.NET Core** and **Entity Framework Core**.
+
+## Features
+
+- ✅ CRUD operations for orders
+- 🔐 Authentication with JWT
+- 🗄️ Entity Framework Core with SQLite In-Memory
+- 🔍 Integration tests
+- ☁️ CI/CD with GitHub Actions
 
 An advanced-level task to practice creating a Web API application that accesses a relational database as a data source.
 
