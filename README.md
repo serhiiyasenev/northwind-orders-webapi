@@ -142,6 +142,3 @@ Diagram 4. Northwind Database Schema.
 <!-- coverage-report-start -->
 (coverage summary table will be inserted here automatically)
 <!-- coverage-report-end -->
-
-
-
