@@ -152,3 +152,4 @@ Northwind.Services.EntityFramework | 0% | 0% | 139 | ❌
 Northwind.Services.EntityFramework.Tests | 3% | 16% | 167 | ❌
 **Summary** | **52%** (649 / 1913) | **43%** (73 / 256) | **669** | ➖
 <!-- coverage-report-end -->
+
