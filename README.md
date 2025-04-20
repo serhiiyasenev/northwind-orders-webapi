@@ -139,6 +139,7 @@ Diagram 4. Northwind Database Schema.
 [🔗 View Full HTML Report](https://serhiiyasenev.github.io/northwind-orders-webapi/coveragereport/index.htm)
 
 <!-- coverage-report-start -->
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-52%25-yellow?style=flat)
 
 Package | Line Rate | Branch Rate | Complexity | Health
 -------- | --------- | ----------- | ---------- | ------
