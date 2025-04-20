@@ -39,6 +39,15 @@ jobs:
             -targetdir:coveragereport \
             -reporttypes:"HtmlInline;Badges"
 
+      - name: Generate ReportGenerator coverage badge
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
+        with:
+          reports: '**/coverage.cobertura.xml'
+          targetdir: 'coveragereport'
+          reporttypes: 'Badges;HtmlInline'
+          assemblyfilters: '-*.Tests'
+
+
       - name: Commit & push coverage badge
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
