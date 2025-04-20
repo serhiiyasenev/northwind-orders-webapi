@@ -10,27 +10,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build solution
-      run: dotnet build --configuration Debug --no-restore
+      - name: Build solution
+        run: dotnet build --configuration Debug --no-restore
 
-    - name: Run tests with coverage
-      run: dotnet test --collect:"XPlat Code Coverage"
+      - name: Run tests with coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
 
-    - name: Generate Coverage Report
-      env:
-        PATH: $PATH:/home/runner/.dotnet/tools
-      run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+      - name: Generate coverage report and badge
+        env:
+          PATH: $PATH:/home/runner/.dotnet/tools
+        run: |
+          reportgenerator \
+            -reports:**/coverage.cobertura.xml \
+            -targetdir:coveragereport \
+            -reporttypes:HtmlInline;Badges
+
+      - name: Commit & push coverage badge
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git pull --rebase
+          git add coveragereport/badge_line.svg
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push
