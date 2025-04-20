@@ -138,4 +138,10 @@ Diagram 4. Northwind Database Schema.
 
 ![Code Coverage](https://img.shields.io/badge/Code%20Coverage-52%25-yellow?style=flat)
 
+## 🧪 Code Coverage Report
+
+<!-- coverage-report-start -->
+(coverage summary table will be inserted here)
+<!-- coverage-report-end -->
+
 
