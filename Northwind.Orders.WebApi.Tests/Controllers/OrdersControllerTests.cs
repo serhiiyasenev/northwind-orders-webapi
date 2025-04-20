@@ -371,6 +371,7 @@ public sealed class OrdersControllerTests
     public async Task UpdateOrderAsync_OrderIsExist_UpdatesOrder(long orderId, ModelsBriefOrder order)
     {
         // Arrange
+        order.Id = orderId;
         var orderRepositoryMock = new Mock<IOrderRepository>();
         orderRepositoryMock
             .Setup(r => r.UpdateOrderAsync(It.Is<RepositoryOrder>(arg => arg.Id == orderId)))
@@ -394,6 +395,7 @@ public sealed class OrdersControllerTests
     public async Task UpdateOrderAsync_OrderIsNotExist_ReturnsNotFound(long orderId, ModelsBriefOrder order)
     {
         // Arrange
+        order.Id = orderId;
         var orderRepositoryMock = new Mock<IOrderRepository>();
         orderRepositoryMock
             .Setup(r => r.UpdateOrderAsync(It.Is<RepositoryOrder>((arg) => arg.Id == orderId)))
@@ -418,6 +420,7 @@ public sealed class OrdersControllerTests
     public async Task UpdateOrderAsync_ExceptionThrown_ReturnsServerError(long orderId, ModelsBriefOrder order)
     {
         // Arrange
+        order.Id = orderId;
         var orderRepositoryMock = new Mock<IOrderRepository>();
         orderRepositoryMock
             .Setup(r => r.UpdateOrderAsync(It.Is<RepositoryOrder>((arg) => arg.Id == orderId)))
