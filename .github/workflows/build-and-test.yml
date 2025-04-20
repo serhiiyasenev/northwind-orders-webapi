@@ -1,20 +1,19 @@
-name: Build, Test and Coverage (.NET)
+name: Build and Test
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  build-and-test:
+  build-test:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      checks: write
+    env:
+      DOTNET_ROOT: /usr/share/dotnet
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -22,60 +21,75 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore
 
-      - name: Build solution
+      - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests - WebApi
+      - name: Test with Coverage
         run: |
-          dotnet test ./Northwind.Orders.WebApi.Tests/Northwind.Orders.WebApi.Tests.csproj \
-            --no-build --configuration Release \
-            --logger "trx;LogFileName=webapi-tests.trx" \
-            --collect:"XPlat Code Coverage"
+          dotnet test \
+            --no-build \
+            --configuration Release \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
-      - name: Run tests - EF Services
-        run: |
-          dotnet test ./Northwind.Services.EntityFramework.Tests/Northwind.Services.EntityFramework.Tests.csproj \
-            --no-build --configuration Release \
-            --logger "trx;LogFileName=ef-tests.trx" \
-            --collect:"XPlat Code Coverage"
-
-      - name: Upload Test Results (.trx)
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: '**/TestResults/*.trx'
-
-      - name: Upload Code Coverage (.cobertura.xml)
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage
-          path: '**/coverage.cobertura.xml'
-
-      - name: Report Test Results to GitHub UI
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Unit Tests
-          path: '**/TestResults/*.trx'
-          reporter: dotnet-trx
-
-      - name: Report Code Coverage Summary
+      - name: Generate Markdown Summary
         uses: irongut/CodeCoverageSummary@v1.3.0
+        id: coverage
         with:
           filename: '**/coverage.cobertura.xml'
           badge: true
-          format: 'markdown'
-          output: 'both'
+          format: markdown
+          output: both
+          fail_below_min: false
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          thresholds: 50 75
 
-      - name: Save coverage badge
-        if: always()
+      - name: Generate HTML report + SVG badge
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
+        with:
+          reports: '**/coverage.cobertura.xml'
+          targetdir: 'coveragereport'
+          reporttypes: 'Badges;HtmlInline_AzurePipelines'
+          assemblyfilters: '-*.Tests'
+
+      - name: Update README.md coverage section
         run: |
-          if [ -f code-coverage-results.md ]; then
-            mkdir -p coverage-badges
-            cp code-coverage-results.md coverage-badges/coverage-summary.md
-          else
-            echo "No coverage summary generated."
-          fi
+          start_marker="<!-- coverage-report-start -->"
+          end_marker="<!-- coverage-report-end -->"
+          summary="$(cat code-coverage-results.md)"
+          awk -v start="$start_marker" -v end="$end_marker" -v summary="$summary" '
+            BEGIN {print_section=1}
+            {
+              if ($0 ~ start) {print; print summary; print_section=0}
+              else if ($0 ~ end) {print_section=1; print}
+              else if (print_section) {print}
+            }
+          ' README.md > README.tmp && mv README.tmp README.md
+
+      - name: Commit and push README.md + report
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md coveragereport/*
+          git diff --cached --quiet || git commit -m "🔄 Update coverage summary and report"
+          git push
+
+      - name: Upload coverage report as artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coveragereport
+
+      - name: Post coverage summary to PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: code-coverage-results.md
