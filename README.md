@@ -4,15 +4,15 @@ An advanced-level task to practice creating a Web API application that accesses 
 
 To successfully complete the task, you must have the following skills:
 * You should be familiar with structured and object-oriented programming in C#.
-* You should know NET's string parsing and data formatting capabilities.
+* You should know .NET string parsing and data formatting capabilities.
 * You should be familiar with the [task asynchronous programming model (TAP)](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model).
 * You should know the [Entity Framework](https://learn.microsoft.com/en-us/aspnet/entity-framework) object-relational mapper.
 * You should know the [Repository design pattern](https://martinfowler.com/eaaCatalog/repository.html).
-* You should know how to build [controller-based Web API applications](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-7.0) using ASP.NET Core.
+* You should know how to build [controller-based Web API applications](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-8.0) using ASP.NET Core.
 
 Estimated time to complete the task: 6 hours.
 
-The task requires [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) to be installed.
+The task requires [.NET 8 or higher SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) to be installed.
 
 
 ## Task Description
@@ -139,7 +139,6 @@ Diagram 4. Northwind Database Schema.
 [🔗 View Full HTML Report](https://serhiiyasenev.github.io/northwind-orders-webapi/coveragereport/index.htm)
 
 <!-- coverage-report-start -->
-![Code Coverage](https://img.shields.io/badge/Code%20Coverage-52%25-yellow?style=flat)
 
 Package | Line Rate | Branch Rate | Complexity | Health
 -------- | --------- | ----------- | ---------- | ------
