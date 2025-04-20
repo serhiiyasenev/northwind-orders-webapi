@@ -131,12 +131,4 @@ Diagram 4. Northwind Database Schema.
 * Do not install additional NuGet packages for the projects in this solution.
 * The task is considered completed if all unit tests pass successfully.
 
-
-## Task Checklist
-
-- [ ] The solution builds without compilation errors.
-- [ ] All unit tests pass successfully.
-- [ ] There are no compilation warnings.
-- [ ] Changes are only in the `Northwind.Orders.WebApi` and `Northwind.Services.EntityFramework` projects.
-- [ ] There are no changes in project and unit test files.
-- [ ] All changes in source files are committed and pushed to the remote repository.
+![Coverage](./coveragereport/badge_line.svg)
