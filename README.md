@@ -132,5 +132,10 @@ Diagram 4. Northwind Database Schema.
 * The task is considered completed if all unit tests pass successfully.
 
 
+
 ![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
+
+
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-52%25-yellow?style=flat)
+
 
