@@ -132,11 +132,5 @@ Diagram 4. Northwind Database Schema.
 * The task is considered completed if all unit tests pass successfully.
 
 
-## Task Checklist
+![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
 
-- [ ] The solution builds without compilation errors.
-- [ ] All unit tests pass successfully.
-- [ ] There are no compilation warnings.
-- [ ] Changes are only in the `Northwind.Orders.WebApi` and `Northwind.Services.EntityFramework` projects.
-- [ ] There are no changes in project and unit test files.
-- [ ] All changes in source files are committed and pushed to the remote repository.

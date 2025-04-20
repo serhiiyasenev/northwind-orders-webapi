@@ -1,0 +1,53 @@
+name: Generate Coverage Badge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  coverage-badge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Debug --no-restore
+
+      - name: Run tests with coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
+
+      - name: Generate coverage report and badge
+        env:
+          PATH: $PATH:/home/runner/.dotnet/tools
+        run: |
+          reportgenerator \
+            -reports:**/coverage.cobertura.xml \
+            -targetdir:coveragereport \
+            -reporttypes:"HtmlInline;Badges"
+
+      - name: Commit & push coverage badge
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git pull --rebase
+          git add coveragereport/badge_linecoverage.svg
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push
+

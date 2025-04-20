@@ -1,0 +1,81 @@
+name: Build, Test and Coverage (.NET)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      checks: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run tests - WebApi
+        run: |
+          dotnet test ./Northwind.Orders.WebApi.Tests/Northwind.Orders.WebApi.Tests.csproj \
+            --no-build --configuration Release \
+            --logger "trx;LogFileName=webapi-tests.trx" \
+            --collect:"XPlat Code Coverage"
+
+      - name: Run tests - EF Services
+        run: |
+          dotnet test ./Northwind.Services.EntityFramework.Tests/Northwind.Services.EntityFramework.Tests.csproj \
+            --no-build --configuration Release \
+            --logger "trx;LogFileName=ef-tests.trx" \
+            --collect:"XPlat Code Coverage"
+
+      - name: Upload Test Results (.trx)
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'
+
+      - name: Upload Code Coverage (.cobertura.xml)
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: '**/coverage.cobertura.xml'
+
+      - name: Report Test Results to GitHub UI
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Unit Tests
+          path: '**/TestResults/*.trx'
+          reporter: dotnet-trx
+
+      - name: Report Code Coverage Summary
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: '**/coverage.cobertura.xml'
+          badge: true
+          format: 'markdown'
+          output: 'both'
+
+      - name: Save coverage badge
+        if: always()
+        run: |
+          if [ -f code-coverage-results.md ]; then
+            mkdir -p coverage-badges
+            cp code-coverage-results.md coverage-badges/coverage-summary.md
+          else
+            echo "No coverage summary generated."
+          fi
