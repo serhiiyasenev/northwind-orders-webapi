@@ -36,20 +36,6 @@ jobs:
             --results-directory ./TestResults \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
-      - name: Generate Markdown Summary
-        uses: irongut/CodeCoverageSummary@v1.3.0
-        id: coverage
-        with:
-          filename: '**/coverage.cobertura.xml'
-          badge: true
-          format: markdown
-          output: both
-          fail_below_min: false
-          hide_branch_rate: false
-          hide_complexity: false
-          indicators: true
-          thresholds: 50 75
-
       - name: Generate HTML report + SVG badge
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
         with:
@@ -58,27 +44,13 @@ jobs:
           reporttypes: 'Badges;HtmlInline_AzurePipelines'
           assemblyfilters: '-*.Tests'
 
-      - name: Update README.md coverage section
-        run: |
-          start_marker="<!-- coverage-report-start -->"
-          end_marker="<!-- coverage-report-end -->"
-          summary="$(cat code-coverage-results.md)"
-          awk -v start="$start_marker" -v end="$end_marker" -v summary="$summary" '
-            BEGIN {print_section=1}
-            {
-              if ($0 ~ start) {print; print summary; print_section=0}
-              else if ($0 ~ end) {print_section=1; print}
-              else if (print_section) {print}
-            }
-          ' README.md > README.tmp && mv README.tmp README.md
-
-      - name: Commit and push README.md + report
+      - name: Commit and push coverage report
         if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add README.md coveragereport/*
-          git diff --cached --quiet || git commit -m "🔄 Update coverage summary and report"
+          git diff --cached --quiet || git commit -m "🔄 Update coverage badge and report"
           git push
 
       - name: Upload coverage report as artifact
@@ -87,9 +59,3 @@ jobs:
         with:
           name: code-coverage-report
           path: coveragereport
-
-      - name: Post coverage summary to PR
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          path: code-coverage-results.md
