@@ -144,4 +144,23 @@ Diagram 4. Northwind Database Schema.
 (coverage summary table will be inserted here)
 <!-- coverage-report-end -->
 
+## 📊 Code Coverage Summary
+
+![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
+
+<!-- coverage-report-start -->
+(coverage summary table will be inserted here automatically)
+<!-- coverage-report-end -->
+
+## 📊 Code Coverage Summary
+
+![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
+
+[🔗 View Full HTML Report](https://serhiiyasenev.github.io/northwind-orders-webapi/coveragereport/index.htm)
+
+<!-- coverage-report-start -->
+(coverage summary table will be inserted here automatically)
+<!-- coverage-report-end -->
+
+
 

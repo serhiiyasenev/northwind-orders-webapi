@@ -2,8 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build-test:
@@ -35,7 +36,7 @@ jobs:
             --results-directory ./TestResults \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
-      - name: Generate Code Coverage Summary
+      - name: Generate Markdown Summary
         uses: irongut/CodeCoverageSummary@v1.3.0
         id: coverage
         with:
@@ -48,6 +49,14 @@ jobs:
           hide_complexity: false
           indicators: true
           thresholds: 50 75
+
+      - name: Generate HTML report + SVG badge
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
+        with:
+          reports: '**/coverage.cobertura.xml'
+          targetdir: 'coveragereport'
+          reporttypes: 'Badges;HtmlInline_AzurePipelines'
+          assemblyfilters: '-*.Tests'
 
       - name: Update README.md coverage section
         run: |
@@ -63,10 +72,24 @@ jobs:
             }
           ' README.md > README.tmp && mv README.tmp README.md
 
-      - name: Commit and push README.md if changed
+      - name: Commit and push README.md + report
+        if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git diff --cached --quiet || git commit -m "🔄 Update code coverage summary in README.md"
+          git add README.md coveragereport/*
+          git diff --cached --quiet || git commit -m "🔄 Update coverage summary and report"
           git push
+
+      - name: Upload coverage report as artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coveragereport
+
+      - name: Post coverage summary to PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: code-coverage-results.md
