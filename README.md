@@ -133,25 +133,6 @@ Diagram 4. Northwind Database Schema.
 
 
 
-![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
-
-
-![Code Coverage](https://img.shields.io/badge/Code%20Coverage-52%25-yellow?style=flat)
-
-## 🧪 Code Coverage Report
-
-<!-- coverage-report-start -->
-(coverage summary table will be inserted here)
-<!-- coverage-report-end -->
-
-## 📊 Code Coverage Summary
-
-![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
-
-<!-- coverage-report-start -->
-(coverage summary table will be inserted here automatically)
-<!-- coverage-report-end -->
-
 ## 📊 Code Coverage Summary
 
 ![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
