@@ -1,13 +1,13 @@
 # Northwind Order Repository (Web API)
 
-An advanced-level task to practice creating the Web API application that accesses a relational database as a data source.
+An advanced-level task to practice creating a Web API application that accesses a relational database as a data source.
 
 To successfully complete the task, you must have the following skills:
 * You should be familiar with structured and object-oriented programming in C#.
-* You should be familiar with .NET's string parsing and data formatting capabilities.
+* You should know NET's string parsing and data formatting capabilities.
 * You should be familiar with the [task asynchronous programming model (TAP)](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model).
-* You should be familiar with the [Entity Framework](https://learn.microsoft.com/en-us/aspnet/entity-framework) object-relational mapper.
-* You should be familiar with the [Repository design pattern](https://martinfowler.com/eaaCatalog/repository.html).
+* You should know the [Entity Framework](https://learn.microsoft.com/en-us/aspnet/entity-framework) object-relational mapper.
+* You should know the [Repository design pattern](https://martinfowler.com/eaaCatalog/repository.html).
 * You should know how to build [controller-based Web API applications](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-7.0) using ASP.NET Core.
 
 Estimated time to complete the task: 6 hours.
@@ -75,14 +75,14 @@ The implementation of the `OrderRepository` class must meet the following requir
 * The repository class must use the [NorthwindContext](Northwind.Services.EntityFramework/Entities/NorthwindContext.cs) object to access the database entities in the database.
 * The repository class must implement *Constructor Injection* form of the [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) design pattern.
 * The repository class must have one public constructor with one parameter to initialize a repository object with the `NorthwindContext` object (see Diagram 2).
-* The `GetOrderAsync`, `RemoveOrderAsync` and `UpdateOrderAsync` methods must throw the [OrderNotFoundException](Northwind.Services/Repositories/OrderNotFoundException.cs) if a repository has no order with the specified identifier.
+* The `GetOrderAsync`, `RemoveOrderAsync`, and `UpdateOrderAsync` methods must throw the [OrderNotFoundException](Northwind.Services/Repositories/OrderNotFoundException.cs) if a repository has no order with the specified identifier.
 * The `AddOrderAsync` method must throw the [RepositoryException](Northwind.Services/Repositories/RepositoryException.cs) if a database operation returns an error.
 * The `GetOrdersAsync` method must throw the [ArgumentOutOfRangeException](https://learn.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception) if a method argument has incorrect value.
 
 
 ### The OrdersController Class
 
-To allow a Web API application to handle incoming HTTP requests, you have to implement the [OrdersController](Northwind.Orders.WebApi/Controllers/OrdersController.cs#9) class as an ASP.NET WebAPI controller with the required action methods:
+To allow a Web API application to handle incoming HTTP requests, you have to implement the [OrdersController](Northwind.Orders.WebApi/Controllers/OrdersController.cs#9) class as an ASP.NET Web API controller with the required action methods:
 
 | Method Name      | HTTP Verb | URI                                  | HTTP Status Code |
 |------------------|-----------|--------------------------------------|------------------|
@@ -97,14 +97,14 @@ The implementation of the action methods must meet the following requirements:
 * The repository class must implement *Constructor Injection* form of the [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) design pattern.
 * The repository class must have one public constructor with two parameters to initialize a controller with the `IOrderRepository` and [ILogger<TCategoryName>](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging) dependencies.
 * The `skip` and `count` parameters of the `GetOrdersAsync` action method are optional. The default value for the `skip` parameter is `0`. The default parameter for the `count` parameter is `10`.
-* The `GetOrderAsync`, `RemoveOrderAsync` and `UpdateOrderAsync` action methods must return the "Not Found" status code if a repository has no order with the specified identifier.
+* The `GetOrderAsync`, `RemoveOrderAsync`, and `UpdateOrderAsync` action methods must return the "Not Found" status code if a repository has no order with the specified identifier.
 * All action methods must return the "Internal Server Error" status code if a repository method throws an unhandled exception.
 * All action methods must write error and trace log messages.
 
 
 ### Northwind Database
 
-The application and unit tests are configured to use the SQLite in-memory database as a data source. The database schema is shown on the Diagram 4.
+The application and unit tests are configured to use the SQLite in-memory database as a data source. The database schema is shown in Diagram 4.
 
 Diagram 4. Northwind Database Schema.
 
@@ -132,7 +132,6 @@ Diagram 4. Northwind Database Schema.
 * The task is considered completed if all unit tests pass successfully.
 
 
-
 ## 📊 Code Coverage Summary
 
 ![Coverage](https://raw.githubusercontent.com/serhiiyasenev/northwind-orders-webapi/main/coveragereport/badge_linecoverage.svg)
@@ -140,7 +139,6 @@ Diagram 4. Northwind Database Schema.
 [🔗 View Full HTML Report](https://serhiiyasenev.github.io/northwind-orders-webapi/coveragereport/index.htm)
 
 <!-- coverage-report-start -->
-![Code Coverage](https://img.shields.io/badge/Code%20Coverage-52%25-yellow?style=flat)
 
 Package | Line Rate | Branch Rate | Complexity | Health
 -------- | --------- | ----------- | ---------- | ------
@@ -152,4 +150,3 @@ Northwind.Services.EntityFramework | 0% | 0% | 139 | ❌
 Northwind.Services.EntityFramework.Tests | 3% | 16% | 167 | ❌
 **Summary** | **52%** (649 / 1913) | **43%** (73 / 256) | **669** | ➖
 <!-- coverage-report-end -->
-
