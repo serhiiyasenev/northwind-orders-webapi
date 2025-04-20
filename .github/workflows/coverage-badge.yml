@@ -37,7 +37,7 @@ jobs:
           reportgenerator \
             -reports:**/coverage.cobertura.xml \
             -targetdir:coveragereport \
-            -reporttypes:HtmlInline;Badges
+            -reporttypes:"HtmlInline;Badges"
 
       - name: Commit & push coverage badge
         run: |
