@@ -1,2 +1,12 @@
-```gitattributes
+# Tell GitHub Linguist to ignore generated files
+coveragereport/* linguist-generated
+*.html linguist-generated
+
+# Treat C# files as primary
 *.cs linguist-language=C#
+*.csproj linguist-language=XML
+*.sln linguist-language=Text
+
+# Normalize line endings
+* text=auto
+*.cs text diff=csharp
