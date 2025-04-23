@@ -147,4 +147,3 @@ Diagram 4. Northwind Database Schema.
 ![Coverage](./badge.svg)
 
 [🔗 View Full HTML Report](https://serhiiyasenev.github.io/northwind-orders-webapi/coveragereport/index.htm)
-
