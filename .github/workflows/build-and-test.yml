@@ -104,11 +104,14 @@ jobs:
           name: coverage-report
           path: ./coveragereport
 
+      - name: Show contents of Coverage Report
+        run: ls -R ./coveragereport
+
       - name: Deploy coverage report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coveragereport
           publish_branch: gh-pages
-          destination_dir: coveragereport
+          destination_dir: ./coveragereport
           keep_files: true
