@@ -53,7 +53,7 @@ jobs:
           keep_files: true
 
       - name: Copy badge to root
-        run: cp coveragereport/badge.svg ./badge.svg
+        run: cp coveragereport/badge_linecoverage.svg ./badge.svg
 
       - name: Commit badge.svg to main
         run: |
