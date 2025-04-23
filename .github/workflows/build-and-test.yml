@@ -102,7 +102,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
-          path: ./coveragereport
+          path: .
 
       - name: Show contents of Coverage Report
         run: ls -R ./coveragereport
