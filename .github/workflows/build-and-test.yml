@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coveragereport
+          path: ./coveragereport
 
       - name: Check if coverage badge was generated
         id: check-coverage
@@ -102,7 +102,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
-          path: coveragereport
+          path: ./coveragereport
 
       - name: Deploy coverage report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
