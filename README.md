@@ -146,4 +146,6 @@ Diagram 4. Northwind Database Schema.
 
 ![Coverage](./badge.svg)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=serhiiyasenev_northwind-orders-webapi&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=serhiiyasenev_northwind-orders-webapi)
+
 [🔗 View Full HTML Report](https://serhiiyasenev.github.io/northwind-orders-webapi/coveragereport/index.htm)
