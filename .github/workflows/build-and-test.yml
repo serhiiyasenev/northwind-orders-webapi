@@ -9,8 +9,6 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    env:
-      DOTNET_ROOT: /usr/share/dotnet
 
     steps:
       - name: Checkout
@@ -36,7 +34,7 @@ jobs:
             --results-directory ./TestResults \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
-      - name: Generate HTML report + SVG badge
+      - name: Generate Coverage Report
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
         with:
           reports: '**/coverage.cobertura.xml'
@@ -44,18 +42,23 @@ jobs:
           reporttypes: 'Badges;HtmlInline_AzurePipelines'
           assemblyfilters: '-*.Tests'
 
-      - name: Commit and push coverage report
+      - name: Deploy coverage report to GitHub Pages
         if: github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coveragereport
+          publish_branch: gh-pages
+          destination_dir: coveragereport
+          keep_files: true
+
+      - name: Copy badge to root
+        run: cp coveragereport/badge.svg ./badge.svg
+
+      - name: Commit badge.svg to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md coveragereport/*
-          git diff --cached --quiet || git commit -m "🔄 Update coverage badge and report"
+          git add badge.svg
+          git diff --cached --quiet || git commit -m "📈 Update coverage badge"
           git push
-
-      - name: Upload coverage report as artifact
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage-report
-          path: coveragereport
