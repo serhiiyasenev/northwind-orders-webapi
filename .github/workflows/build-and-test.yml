@@ -113,5 +113,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coveragereport
           publish_branch: gh-pages
-          destination_dir: ./coveragereport
+          destination_dir: coveragereport
           keep_files: true
