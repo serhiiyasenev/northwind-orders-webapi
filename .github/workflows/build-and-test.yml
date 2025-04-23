@@ -7,9 +7,10 @@ on:
     branches: [main]
 
 jobs:
-  build-test:
+  build-and-test:
     runs-on: ubuntu-latest
-
+    outputs:
+      coverage-generated: ${{ steps.check-coverage.outputs.coverage }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,8 +43,68 @@ jobs:
           reporttypes: 'Badges;HtmlInline_AzurePipelines'
           assemblyfilters: '-*.Tests'
 
+      - name: Upload badge as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-badge
+          path: coveragereport/badge_linecoverage.svg
+
+      - name: Upload full HTML report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coveragereport
+
+      - name: Check if coverage badge was generated
+        id: check-coverage
+        run: |
+          if [ -f coveragereport/badge_linecoverage.svg ]; then
+            echo "coverage=true" >> $GITHUB_OUTPUT
+          else
+            echo "coverage=false" >> $GITHUB_OUTPUT
+          fi
+
+  badge-deploy:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' && needs.build-and-test.outputs.coverage-generated == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Download badge artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-badge
+
+      - name: Move badge to root
+        run: mv badge_linecoverage.svg badge.svg
+
+      - name: Commit and push badge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add badge.svg
+          git diff --cached --quiet || git commit -m "📈 Update coverage badge"
+          git push origin main
+
+  report-deploy:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' && needs.build-and-test.outputs.coverage-generated == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Download full report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coveragereport
+
       - name: Deploy coverage report to GitHub Pages
-        if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -51,14 +112,3 @@ jobs:
           publish_branch: gh-pages
           destination_dir: coveragereport
           keep_files: true
-
-      - name: Copy badge to root
-        run: cp coveragereport/badge_linecoverage.svg ./badge.svg
-
-      - name: Commit badge.svg to main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add badge.svg
-          git diff --cached --quiet || git commit -m "📈 Update coverage badge"
-          git push
