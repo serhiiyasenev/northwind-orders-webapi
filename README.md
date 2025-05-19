@@ -11,23 +11,11 @@ This project provides a RESTful Web API for managing orders in the classic North
 - ☁️ CI/CD with GitHub Actions
 
 An advanced-level task to practice creating a Web API application that accesses a relational database as a data source.
-
-To successfully complete the task, you must have the following skills:
-* You should be familiar with structured and object-oriented programming in C#.
-* You should know .NET string parsing and data formatting capabilities.
-* You should be familiar with the [task asynchronous programming model (TAP)](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model).
-* You should know the [Entity Framework](https://learn.microsoft.com/en-us/aspnet/entity-framework) object-relational mapper.
-* You should know the [Repository design pattern](https://martinfowler.com/eaaCatalog/repository.html).
-* You should know how to build [controller-based Web API applications](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-8.0) using ASP.NET Core.
-
-Estimated time to complete the task: 6 hours.
-
 The task requires [.NET 8 or higher SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) to be installed.
 
+## Description
 
-## Task Description
-
-In this task, you have to develop a Web API application using ASP.NET Core and the Entity Framework.
+You have to develop a Web API application using ASP.NET Core and the Entity Framework in this task.
 
 The application consists of a few components that you have to implement:
 1. Design and implement [entity types](https://learn.microsoft.com/en-us/ef/core/modeling/entity-types) and map them to the underlying database.
