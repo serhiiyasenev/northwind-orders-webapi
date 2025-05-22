@@ -15,7 +15,7 @@ The task requires [.NET 8 or higher SDK](https://dotnet.microsoft.com/en-us/down
 
 ## Description
 
-You have to develop a Web API application using ASP.NET Core and the Entity Framework in this task.
+Web API application using ASP.NET Core and the Entity Framework was created.
 
 The application consists of a few components that you have to implement:
 1. Design and implement [entity types](https://learn.microsoft.com/en-us/ef/core/modeling/entity-types) and map them to the underlying database.
